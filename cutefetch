@@ -58,7 +58,6 @@ help_info() {
     echo ""
 }
 
-# set the eyes, ^.^ by default
 eyes() {
     case "$1" in
     0) echo ". ." ;;
@@ -185,33 +184,25 @@ init() {
     readonly u=""
     readonly p="󰏖"
 
-    # For resolution: using xrandr
     readonly res=$(xrandr | grep "*" | awk '{ print $1 }')
 
-    # Getting kernel version using uname -r
     readonly kern=$(uname -r | grep -iq "surface" && echo "linux-surface" || (uname -r | grep -iq "zen" && echo "linux-zen"))
 
-    # Getting shell type
     readonly shell=$(basename $SHELL)
 
-    # Getting memory usage using free command (in GiB)
     readonly mem=$(free -h --giga | grep Mem | awk '{print $3 "iB / " $2 "iB"}')$(free | awk '/Mem/ {print " (" int($3/$2 * 100) "%)"}')
 
 
-    # WM/DE info (with XDG_CURRENT_DESKTOP)
     readonly wm=$(echo $XDG_CURRENT_DESKTOP)
 
-    # Getting username (with whoami)
     readonly user=$(whoami)
 
-    # Getting package count
     pacman_pkgs=$(pacman -Q | wc -l)
     aur_pkgs=$(yay -Qm | wc -l)  # For AUR packages
     flatpak_pkgs=$(flatpak list | wc -l)
     appimages_pkgs=$(find $HOME/AppImages -type f -iname "*.appimage" | wc -l)
     pkgs=$((pacman_pkgs + aur_pkgs + flatpak_pkgs + appimages_pkgs))
 
-    # Getting distro
     distro=$(grep "^NAME=" /etc/os-release | cut -d= -f2 | tr -d '"')
 }
 
@@ -219,7 +210,6 @@ init() {
 
 init
 
-# Process arguments
 while getopts ":e:m:rvh" opt; do
     case "$opt" in
         e)
@@ -245,25 +235,17 @@ while getopts ":e:m:rvh" opt; do
             ;;
     esac
 done
-
-# Handle the -r flag for randomization
 if [[ "$randomize" == true ]]; then
     modes=("cat" "bunny" "puppy" "penguin")
     mode=${modes[$RANDOM % ${#modes[@]}]}
     eyes_num=$((RANDOM % 15))
 fi
-
-# If no mode was specified, default to "cat"
 if [ -z "$mode" ]; then
     mode="cat"
 fi
-
-# If no eyes specified, default to "0"
 if [ -z "$eyes_num" ]; then
     eyes_num=6
 fi
-
-# Fetch the selected mode
 case "$mode" in
     cat)
         kittyfetch "$eyes_num"
