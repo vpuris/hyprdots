@@ -1,0 +1,336 @@
+#!/usr/bin/env bash
+# --------------------------------------------------------------------------------------------------- #
+#  ______                                  _ _               _    _              _
+# (_____ \                                | (_)             | |  | |            (_)
+#  _____) )___  ____ ___  ___  ____   ____| |_ _____ ____ _ | |  | | _  _   _    _ _____ _   _
+# |  ____/ _  )/ ___)___)/ _ \|  _ \ / _  | | (___  ) _  ) || |  | || \| | | |  | (___  ) | | |
+# | |   ( (/ /| |  |___ | |_| | | | ( ( | | | |/ __( (/ ( (_| |  | |_) ) |_| |  | |/ __/| |_| |
+# |_|    \____)_|  (___/ \___/|_| |_|\_||_|_|_(_____)____)____|  |____/ \__  |  |_(_____)\____|
+ #                                                                     (____/
+
+
+# Tiny coloured fetch script with cute little animals
+#
+# Authored by: elenapan  (https://github.com/elenapan)
+# Modified by: strafe    (https://github.com/strafe)
+# Modified by: cybardev  (https://github.com/cybardev)
+# And others: https://github.com/cybardev/cutefetch/graphs/contributors
+# --------------------------------------------------------------------------------------------------- #
+
+readonly VERSION_INFO="v3.0.0"
+
+# ---------------------------- Utilities ---------------------------- #
+
+# help information
+help_info() {
+    echo -e "\e[1mCutefetch - Tiny coloured fetch script to display sysinfo\e[0m"
+    echo ""
+    echo -e "\e[1mUSAGE: $(basename $0) [-m MODE] [-e EYES] [-r] [-v] [-h]\e[0m"
+    echo ""
+    echo -e "\e[1m    [MODE]:\e[0m"
+    echo -e "\e[1m        cat, kitty            : show kitty ascii art with sysinfo\e[0m"
+    echo -e "\e[1m        catfull, cat2, kitty2 : show kitty ascii art with sysinfo (full body)\e[0m"
+    echo -e "\e[1m        bunny, rabbit         : show bunny ascii art with sysinfo\e[0m"
+    echo -e "\e[1m        dog, doggo, doggy     : show doggy ascii art with sysinfo\e[0m"
+    echo -e "\e[1m        penguin, pengu, pingu : show penguin ascii art with sysinfo\e[0m"
+    echo -e "\e[1m        minimal, simple       : show sysinfo with no ascii art\e[0m"
+    echo -e "\e[1m        none, noglyph, text   : show sysinfo with text only\e[0m"
+    echo ""
+    echo -e "\e[1m    [EYES]:\e[0m"
+    echo -e "\e[1m        Numbers from 0 to 15:\e[0m"
+    echo -e "\e[1m            Selects eyes for cats, bunny, and dog\e[0m"
+    echo ""
+    for i in {0..14}; do
+        printf "\e[1m        %2d:  %3s\n\e[0m" "$i" "$(eyes $i)"
+    done
+    echo ""
+    printf "\e[1m        no/other number:\n\e[0m"
+    printf "\e[1m             %3s (kitty)\n\e[0m" "$(eyes 6)"
+    printf "\e[1m          or %3s (bunny)\n\e[0m" "$(eyes 0)"
+    printf "\e[1m          or %3s (doggy)\n\e[0m" "$(eyes 1)"
+    echo ""
+    echo -e "\e[1m    [-r]            : use randomized ascii art\e[0m"
+    echo -e "\e[1m    [-v]            : print the version number\e[0m"
+    echo -e "\e[1m    [-h]            : print this help message\e[0m"
+    echo -e "\e[1m    [no option]     : same as: $(basename $0) -m cat -e 6\e[0m"
+    echo -e "\e[1m    [unknown option] : print this help message\e[0m"
+    echo -e "\e[1m                      and return status code 1\e[0m"
+    echo ""
+}
+
+# set the eyes, ^.^ by default
+eyes() {
+    case "$1" in
+    0) echo ". ." ;;
+    1) echo "· ·" ;;
+    2) echo "^ ^" ;;
+    3) echo "- -" ;;
+    4) echo "~ ~" ;;
+    5) echo "* *" ;;
+    7) echo "-.-" ;;
+    8) echo "~.~" ;;
+    9) echo "*.*" ;;
+    10) echo "0.0" ;;
+    11) echo "0 0" ;;
+    12) echo "o o" ;;
+    13) echo "o.o" ;;
+    14) echo "° o" ;;
+    *) echo "^.^" ;;
+    esac
+}
+
+# ------------------------- Fetch Functions ------------------------- #
+
+kittyfetch() {
+    echo
+    echo -e "\e[1m             $c8$o$t  $distro"
+    echo -e "\e[1m             $c4$u$t  $user"
+    echo -e "\e[1m             $c1$w$t  $wm"
+    echo -e "\e[1m   /\_/\     $c3$k$t  $kern"
+    echo -e "\e[1m  ( $(eyes $1) )    $c2$s$t  $shell"
+    echo -e "\e[1m   $c1> $c3^ $c1<     $c5$r$t  $res"
+    echo -e "\e[1m             $c6$m$t  $mem"
+    echo -e "\e[1m             $c6$p$t  $pkgs"
+}
+
+kittyfetch2() {
+    echo
+    echo -e "\e[1m                  $c8$o$t  $distro"
+    echo -e "\e[1m                  $c4$u$t  $user"
+    echo -e "\e[1m   /'._           $c1$w$t  $wm"
+    echo -e "\e[1m  ($(eyes $1) 7          $c3$k$t  $kern"
+    echo -e "\e[1m   |'-'\"~.  .     $c2$s$t  $shell"
+    echo -e "\e[1m   Uu^~C_J._.\"    $c5$r$t  $res"
+    echo -e "\e[1m                  $c6$m$t  $mem"
+    echo -e "\e[1m                  $c6$p$t  $pkgs"
+}
+
+bunnyfetch() {
+    echo
+    echo -e "\e[1m             $c8$o$t  $distro"
+    echo -e "\e[1m             $c4$u$t  $user"
+    echo -e "\e[1m             $c1$w$t  $wm"
+    echo -e "\e[1m   (\ /)     $c3$k$t  $kern"
+    echo -e "\e[1m   ( $(eyes $1))    $c2$s$t  $shell"
+    echo -e "\e[1m   c($c1\"$t)($c1\"$t)   $c5$r$t  $res"
+    echo -e "\e[1m             $c6$m$t  $mem"
+    echo -e "\e[1m             $c6$p$t  $pkgs"
+}
+
+puppyfetch() {
+    echo
+    echo -e "\e[1m            $c8$o$t  $distro"
+    echo -e "\e[1m            $c4$u$t  $user"
+    echo -e "\e[1m            $c1$w$t  $wm"
+    echo -e "\e[1m$c3   /^ ^\    $k$t  $kern"
+    echo -e "\e[1m$c3  /$t$c7 $(eyes $1) $c3\   $c2$s$t  $shell"
+    echo -e "\e[1m$c3  V\\$t$c0 Y $c3/V   $c5$r$t  $res"
+    echo -e "\e[1m    $c6 U$t      $c6$m$t  $mem"
+    echo -e "\e[1m            $c6$p$t  $pkgs"
+}
+
+pingufetch() {
+    echo
+    echo -e "\e[1m          $c8$o$t  $distro"
+    echo -e "\e[1m          $c4$u$t  $user"
+    echo -e "\e[1m$c3    W     $c1$w$t  $wm"
+    echo -e "\e[1m$c0   ($t$c7'$c3>    $k$t  $kern"
+    echo -e "\e[1m$c0  /$t$c7/‾\\$c0\\   $c2$s$t  $shell"
+    echo -e "\e[1m$c0  ($t$c7\_/$c0)   $c5$r$t  $res"
+    echo -e "\e[1m$c3   ~ ~    $c6$m$t  $mem"
+    echo -e "\e[1m          $c6$p$t  $pkgs"
+}
+
+simplefetch() {
+    echo
+    echo -e "\e[1m  $c8$o$t  $distro"
+    echo -e "\e[1m  $c4$u$t  $user"
+    echo -e "\e[1m  $c1$w$t  $wm"
+    echo -e "\e[1m  $c3$k$t  $kern"
+    echo -e "\e[1m  $c2$s$t  $shell"
+    echo -e "\e[1m  $c5$r$t  $res"
+    echo -e "\e[1m  $c6$m$t  $mem"
+    echo -e "\e[1m  $c6$p$t  $pkgs"
+}
+
+textfetch() {
+    echo
+    echo -e "\e[1m$c8 os$t : $distro"
+    echo -e "\e[1m$c4 user$t : $user"
+    echo -e "\e[1m$c1 wm $t : $wm"
+    echo -e "\e[1m$c3 krn$t : $kern"
+    echo -e "\e[1m$c2 sh $t : $shell"
+    echo -e "\e[1m$c5 res$t : $res"
+    echo -e "\e[1m$c6 ram$t : $mem"
+    echo -e "\e[1m$c6 pkgs$t : $pkgs"
+}
+
+# ------------------------- Info Collectors ------------------------- #
+
+init() {
+    for i in {0..7}; do
+        printf -v "c${i}" '%b' "\e[3${i}m"
+    done
+
+    readonly d=$'\e[1m'
+    readonly t=$'\e[0m'
+    readonly v=$'\e[7m'
+
+    readonly w=""
+    readonly k=""
+    readonly s=""
+    readonly r=""
+    readonly m=""
+    readonly o=""
+    readonly u=""
+    readonly p="󰏖"
+
+    # For resolution: using xrandr
+    readonly res=$(xrandr | grep "*" | awk '{ print $1 }')
+
+    # Getting kernel version using uname -r
+    readonly kern=$(uname -r | grep -iq "surface" && echo "linux-surface" || (uname -r | grep -iq "zen" && echo "linux-zen"))
+
+    # Getting shell type
+    readonly shell=$(basename $SHELL)
+
+    # Getting memory usage using free command (in GiB)
+    readonly mem=$(free -h --giga | grep Mem | awk '{print $3 "iB / " $2 "iB"}')$(free | awk '/Mem/ {print " (" int($3/$2 * 100) "%)"}')
+
+
+    # WM/DE info (with XDG_CURRENT_DESKTOP)
+    readonly wm=$(echo $XDG_CURRENT_DESKTOP)
+
+    # Getting username (with whoami)
+    readonly user=$(whoami)
+
+    # Getting package count
+    pacman_pkgs=$(pacman -Q | wc -l)
+    aur_pkgs=$(yay -Qm | wc -l)  # For AUR packages
+    flatpak_pkgs=$(flatpak list | wc -l)
+    appimages_pkgs=$(find $HOME/AppImages -type f -iname "*.appimage" | wc -l)
+    pkgs=$((pacman_pkgs + aur_pkgs + flatpak_pkgs + appimages_pkgs))
+
+    # Getting distro
+    distro=$(grep "^NAME=" /etc/os-release | cut -d= -f2 | tr -d '"')
+}
+
+# ------------------------- Main Logic ---------------------------- #
+
+init
+
+# Process arguments
+while getopts ":e:m:rvh" opt; do
+    case "$opt" in
+        e)
+            eyes_num="$OPTARG"
+            ;;
+        m)
+            mode="$OPTARG"
+            ;;
+        r)
+            randomize=true
+            ;;
+        v)
+            echo "$VERSION_INFO"
+            exit 0
+            ;;
+        h)
+            help_info
+            exit 0
+            ;;
+        *)
+            help_info
+            exit 1
+            ;;
+    esac
+done
+
+# Handle the -r flag for randomization
+if [[ "$randomize" == true ]]; then
+    modes=("cat" "bunny" "puppy" "penguin")
+    mode=${modes[$RANDOM % ${#modes[@]}]}
+    eyes_num=$((RANDOM % 15))
+fi
+
+# If no mode was specified, default to "cat"
+if [ -z "$mode" ]; then
+    mode="cat"
+fi
+
+# If no eyes specified, default to "0"
+if [ -z "$eyes_num" ]; then
+    eyes_num=6
+fi
+
+# Fetch the selected mode
+case "$mode" in
+    cat)
+        kittyfetch "$eyes_num"
+        ;;
+    kitty)
+        kittyfetch "$eyes_num"
+        ;;
+    cat2)
+        kittyfetch2 "$eyes_num""♥"
+        ;;
+    kitty2)
+        kittyfetch2 "$eyes_num"
+        ;;
+    catfull)
+        kittyfetch2 "$eyes_num"
+        ;;
+    bunny)
+        bunnyfetch "$eyes_num"
+        ;;
+    rabbit)
+        bunnyfetch "$eyes_num"
+        ;;
+    doggy)
+        puppyfetch "$eyes_num"
+        ;;
+    dog)
+        puppyfetch "$eyes_num"
+        ;;
+    doggo)
+        puppyfetch "$eyes_num"
+        ;;
+    penguin)
+        pingufetch "$eyes_num"
+        ;;
+    pengu)
+        pingufetch "$eyes_num"
+        ;;
+    pengy)
+        pingufetch "$eyes_num"
+        ;;
+    pingu)
+        pingufetch "$eyes_num"
+        ;;
+    minimal)
+        simplefetch
+        ;;
+    simple)
+        simplefetch
+        ;;
+    none)
+        textfetch
+        ;;
+    noglyph)
+        textfetch
+        ;;
+    text)
+        textfetch
+        ;;
+    *)
+        help_info
+        exit 1
+        ;;
+esac
+# --------------------------------------------------------------------------------------------------- #
+#  ____  _  _  ____
+# ( ___)( \( )(  _ \
+#  )__)  )  (  )(_) )
+# (____)(_)\_)(____/
+# --------------------------------------------------------------------------------------------------- #
+
